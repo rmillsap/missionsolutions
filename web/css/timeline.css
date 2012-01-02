@@ -1,0 +1,66 @@
+@font-face {
+    font-family: silk ;
+    src: url( /fonts/slkscr.ttf ) format("truetype");
+}
+
+.timeline {
+
+}
+
+.milestone {
+    text-indent:-1000px;
+    background:url('/images/timeline/milestone.gif') no-repeat;
+    width:15px;
+    height:15px;
+    cursor:pointer;
+    position:relative;
+    top:-22px;
+    left:35px;
+}
+
+    .timeline .progressbar {
+        position:relative;
+        background:#eee;
+        height:10px;
+        top:20px;
+    }
+
+    .timeline .tick {
+        width:50px;
+        border-right:1px solid #fff;
+        border-left:1px solid #eee;
+        float:left;
+        height:40px;
+        margin:0px;
+        padding:0px;
+        cursor:pointer;
+        color:#eee;
+        background:url(/images/timeline/progressbar.gif) repeat-x 0px 8px;
+    }
+
+    .timeline .tick:hover,.timeline .tick:last-child:hover {
+        border-left:1px solid #666;
+        border-right:1px solid #666;
+        color:#666;
+        background:#eee;
+        background:url(/images/timeline/progressbar-ccc.gif) repeat-x 0px 8px;
+    }
+
+    .timeline .tick:last-child {
+        border-right:1px solid #eee;
+    }
+
+        .timeline .tick .label {
+            font-size:8px;
+            /* color:#ddd; */
+            position:relative;
+            left:20px;
+            top:10px;
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            font-family:silk;
+        }
+
+        .timeline .tick .label:hover {
+            /* color:#666; */
+        }

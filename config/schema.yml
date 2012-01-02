@@ -1,0 +1,15 @@
+propel:
+  _attributes:
+    package: lib.model
+    defaultIdMethod: native
+  timeline:
+    _attributes: { phpName: Timeline }
+    id: { phpName: Id, type: BIGINT, size: '11', primaryKey: true, autoIncrement: true, required: true }
+    name: { phpName: Name, type: VARCHAR, size: '255', required: false }
+    user_id: { phpName: UserId, type: BIGINT, size: '20', required: false }
+  user:
+    _attributes: { phpName: User }
+    id: { phpName: Id, type: BIGINT, size: '11', primaryKey: true, autoIncrement: true, required: true }
+    username: { phpName: Username, type: VARCHAR, size: '255', required: false }
+    password: { phpName: Password, type: VARCHAR, size: '255', required: false }
+    email: { phpName: Email, type: VARCHAR, size: '255', required: false }
