@@ -18,4 +18,11 @@ class timelineActions extends BaseAction
   public function executeEdit(sfWebRequest $request)
   {
   }
+
+  public function executeJson_get_ticks(sfWebRequest $request) {
+    $subject = "year";
+    $roll    = $request->getParameter("roll");
+
+    $this->timeline = TimelineDAO::get($request->getParameter("timeline_id"), $subject, $roll);
+  }
 }

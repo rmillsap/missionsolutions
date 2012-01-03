@@ -7,6 +7,11 @@ propel:
     id: { phpName: Id, type: BIGINT, size: '11', primaryKey: true, autoIncrement: true, required: true }
     name: { phpName: Name, type: VARCHAR, size: '255', required: false }
     user_id: { phpName: UserId, type: BIGINT, size: '20', required: false }
+  timeline_tick:
+    _attributes: { phpName: TimelineTick }
+    id: { phpName: Id, type: BIGINT, size: '11', primaryKey: true, autoIncrement: true, required: true }
+    timeline_id: { phpName: TimelineId, type: BIGINT, size: '20', required: false }
+    label: { phpName: Label, type: VARCHAR, size: '255', required: false }
   user:
     _attributes: { phpName: User }
     id: { phpName: Id, type: BIGINT, size: '11', primaryKey: true, autoIncrement: true, required: true }

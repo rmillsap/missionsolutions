@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Base static class for performing query and update operations on the 'user' table.
+ * Base static class for performing query and update operations on the 'timeline_tick' table.
  *
  * 
  *
@@ -11,46 +11,43 @@
  *
  * @package    lib.model.om
  */
-abstract class BaseUserPeer {
+abstract class BaseTimelineTickPeer {
 
 	/** the default database name for this class */
 	const DATABASE_NAME = 'propel';
 
 	/** the table name for this class */
-	const TABLE_NAME = 'user';
+	const TABLE_NAME = 'timeline_tick';
 
 	/** the related Propel class for this table */
-	const OM_CLASS = 'User';
+	const OM_CLASS = 'TimelineTick';
 
 	/** A class that can be returned by this peer. */
-	const CLASS_DEFAULT = 'lib.model.User';
+	const CLASS_DEFAULT = 'lib.model.TimelineTick';
 
 	/** the related TableMap class for this table */
-	const TM_CLASS = 'UserTableMap';
+	const TM_CLASS = 'TimelineTickTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 3;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** the column name for the ID field */
-	const ID = 'user.ID';
+	const ID = 'timeline_tick.ID';
 
-	/** the column name for the USERNAME field */
-	const USERNAME = 'user.USERNAME';
+	/** the column name for the TIMELINE_ID field */
+	const TIMELINE_ID = 'timeline_tick.TIMELINE_ID';
 
-	/** the column name for the PASSWORD field */
-	const PASSWORD = 'user.PASSWORD';
-
-	/** the column name for the EMAIL field */
-	const EMAIL = 'user.EMAIL';
+	/** the column name for the LABEL field */
+	const LABEL = 'timeline_tick.LABEL';
 
 	/**
-	 * An identiy map to hold any loaded instances of User objects.
+	 * An identiy map to hold any loaded instances of TimelineTick objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
 	 * queries.
-	 * @var        array User[]
+	 * @var        array TimelineTick[]
 	 */
 	public static $instances = array();
 
@@ -69,11 +66,11 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Username', 'Password', 'Email', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'username', 'password', 'email', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::USERNAME, self::PASSWORD, self::EMAIL, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'username', 'password', 'email', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'TimelineId', 'Label', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'timelineId', 'label', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::TIMELINE_ID, self::LABEL, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'timeline_id', 'label', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	/**
@@ -83,11 +80,11 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Username' => 1, 'Password' => 2, 'Email' => 3, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'username' => 1, 'password' => 2, 'email' => 3, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USERNAME => 1, self::PASSWORD => 2, self::EMAIL => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'username' => 1, 'password' => 2, 'email' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'TimelineId' => 1, 'Label' => 2, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'timelineId' => 1, 'label' => 2, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::TIMELINE_ID => 1, self::LABEL => 2, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'timeline_id' => 1, 'label' => 2, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	/**
@@ -136,12 +133,12 @@ abstract class BaseUserPeer {
 	 *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
 	 * </code>
 	 * @param      string $alias The alias for the current table.
-	 * @param      string $column The column name for current table. (i.e. UserPeer::COLUMN_NAME).
+	 * @param      string $column The column name for current table. (i.e. TimelineTickPeer::COLUMN_NAME).
 	 * @return     string
 	 */
 	public static function alias($alias, $column)
 	{
-		return str_replace(UserPeer::TABLE_NAME.'.', $alias.'.', $column);
+		return str_replace(TimelineTickPeer::TABLE_NAME.'.', $alias.'.', $column);
 	}
 
 	/**
@@ -157,10 +154,9 @@ abstract class BaseUserPeer {
 	 */
 	public static function addSelectColumns(Criteria $criteria)
 	{
-		$criteria->addSelectColumn(UserPeer::ID);
-		$criteria->addSelectColumn(UserPeer::USERNAME);
-		$criteria->addSelectColumn(UserPeer::PASSWORD);
-		$criteria->addSelectColumn(UserPeer::EMAIL);
+		$criteria->addSelectColumn(TimelineTickPeer::ID);
+		$criteria->addSelectColumn(TimelineTickPeer::TIMELINE_ID);
+		$criteria->addSelectColumn(TimelineTickPeer::LABEL);
 	}
 
 	/**
@@ -179,26 +175,26 @@ abstract class BaseUserPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(UserPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(TimelineTickPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			UserPeer::addSelectColumns($criteria);
+			TimelineTickPeer::addSelectColumns($criteria);
 		}
 
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 		$criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
 		if ($con === null) {
-			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(TimelineTickPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseUserPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseTimelineTickPeer', $criteria, $con);
 		}
 
 		// BasePeer returns a PDOStatement
@@ -217,7 +213,7 @@ abstract class BaseUserPeer {
 	 *
 	 * @param      Criteria $criteria object used to create the SELECT statement.
 	 * @param      PropelPDO $con
-	 * @return     User
+	 * @return     TimelineTick
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
@@ -225,7 +221,7 @@ abstract class BaseUserPeer {
 	{
 		$critcopy = clone $criteria;
 		$critcopy->setLimit(1);
-		$objects = UserPeer::doSelect($critcopy, $con);
+		$objects = TimelineTickPeer::doSelect($critcopy, $con);
 		if ($objects) {
 			return $objects[0];
 		}
@@ -242,7 +238,7 @@ abstract class BaseUserPeer {
 	 */
 	public static function doSelect(Criteria $criteria, PropelPDO $con = null)
 	{
-		return UserPeer::populateObjects(UserPeer::doSelectStmt($criteria, $con));
+		return TimelineTickPeer::populateObjects(TimelineTickPeer::doSelectStmt($criteria, $con));
 	}
 	/**
 	 * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -260,12 +256,12 @@ abstract class BaseUserPeer {
 	public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(TimelineTickPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		if (!$criteria->hasSelectClause()) {
 			$criteria = clone $criteria;
-			UserPeer::addSelectColumns($criteria);
+			TimelineTickPeer::addSelectColumns($criteria);
 		}
 
 		// Set the correct dbName
@@ -273,7 +269,7 @@ abstract class BaseUserPeer {
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseUserPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseTimelineTickPeer', $criteria, $con);
 		}
 
 
@@ -289,10 +285,10 @@ abstract class BaseUserPeer {
 	 * to the cache in order to ensure that the same objects are always returned by doSelect*()
 	 * and retrieveByPK*() calls.
 	 *
-	 * @param      User $value A User object.
+	 * @param      TimelineTick $value A TimelineTick object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(User $obj, $key = null)
+	public static function addInstanceToPool(TimelineTick $obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -310,18 +306,18 @@ abstract class BaseUserPeer {
 	 * methods in your stub classes -- you may need to explicitly remove objects
 	 * from the cache in order to prevent returning objects that no longer exist.
 	 *
-	 * @param      mixed $value A User object or a primary key value.
+	 * @param      mixed $value A TimelineTick object or a primary key value.
 	 */
 	public static function removeInstanceFromPool($value)
 	{
 		if (Propel::isInstancePoolingEnabled() && $value !== null) {
-			if (is_object($value) && $value instanceof User) {
+			if (is_object($value) && $value instanceof TimelineTick) {
 				$key = (string) $value->getId();
 			} elseif (is_scalar($value)) {
 				// assume we've been passed a primary key
 				$key = (string) $value;
 			} else {
-				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or User object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or TimelineTick object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
 				throw $e;
 			}
 
@@ -336,7 +332,7 @@ abstract class BaseUserPeer {
 	 * a multi-column primary key, a serialize()d version of the primary key will be returned.
 	 *
 	 * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-	 * @return     User Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+	 * @return     TimelineTick Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
 	 * @see        getPrimaryKeyHash()
 	 */
 	public static function getInstanceFromPool($key)
@@ -360,7 +356,7 @@ abstract class BaseUserPeer {
 	}
 	
 	/**
-	 * Method to invalidate the instance pool of all tables related to user
+	 * Method to invalidate the instance pool of all tables related to timeline_tick
 	 * by a foreign key with ON DELETE CASCADE
 	 */
 	public static function clearRelatedInstancePool()
@@ -398,11 +394,11 @@ abstract class BaseUserPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = UserPeer::getOMClass(false);
+		$cls = TimelineTickPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key = UserPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj = UserPeer::getInstanceFromPool($key))) {
+			$key = TimelineTickPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj = TimelineTickPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://propel.phpdb.org/trac/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
@@ -411,7 +407,7 @@ abstract class BaseUserPeer {
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
-				UserPeer::addInstanceToPool($obj, $key);
+				TimelineTickPeer::addInstanceToPool($obj, $key);
 			} // if key exists
 		}
 		$stmt->closeCursor();
@@ -434,10 +430,10 @@ abstract class BaseUserPeer {
 	 */
 	public static function buildTableMap()
 	{
-	  $dbMap = Propel::getDatabaseMap(BaseUserPeer::DATABASE_NAME);
-	  if (!$dbMap->hasTable(BaseUserPeer::TABLE_NAME))
+	  $dbMap = Propel::getDatabaseMap(BaseTimelineTickPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseTimelineTickPeer::TABLE_NAME))
 	  {
-	    $dbMap->addTableObject(new UserTableMap());
+	    $dbMap->addTableObject(new TimelineTickTableMap());
 	  }
 	}
 
@@ -454,13 +450,13 @@ abstract class BaseUserPeer {
 	 */
 	public static function getOMClass($withPrefix = true)
 	{
-		return $withPrefix ? UserPeer::CLASS_DEFAULT : UserPeer::OM_CLASS;
+		return $withPrefix ? TimelineTickPeer::CLASS_DEFAULT : TimelineTickPeer::OM_CLASS;
 	}
 
 	/**
-	 * Method perform an INSERT on the database, given a User or Criteria object.
+	 * Method perform an INSERT on the database, given a TimelineTick or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or User object containing data that is used to create the INSERT statement.
+	 * @param      mixed $values Criteria or TimelineTick object containing data that is used to create the INSERT statement.
 	 * @param      PropelPDO $con the PropelPDO connection to use
 	 * @return     mixed The new primary key.
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -469,26 +465,26 @@ abstract class BaseUserPeer {
 	public static function doInsert($values, PropelPDO $con = null)
 	{
     // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserPeer:doInsert:pre') as $sf_hook)
+    foreach (sfMixer::getCallables('BaseTimelineTickPeer:doInsert:pre') as $sf_hook)
     {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseUserPeer', $values, $con))
+      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseTimelineTickPeer', $values, $con))
       {
         return $sf_hook_retval;
       }
     }
 
 		if ($con === null) {
-			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(TimelineTickPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 		} else {
-			$criteria = $values->buildCriteria(); // build Criteria from User object
+			$criteria = $values->buildCriteria(); // build Criteria from TimelineTick object
 		}
 
-		if ($criteria->containsKey(UserPeer::ID) && $criteria->keyContainsValue(UserPeer::ID) ) {
-			throw new PropelException('Cannot insert a value for auto-increment primary key ('.UserPeer::ID.')');
+		if ($criteria->containsKey(TimelineTickPeer::ID) && $criteria->keyContainsValue(TimelineTickPeer::ID) ) {
+			throw new PropelException('Cannot insert a value for auto-increment primary key ('.TimelineTickPeer::ID.')');
 		}
 
 
@@ -507,18 +503,18 @@ abstract class BaseUserPeer {
 		}
 
     // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserPeer:doInsert:post') as $sf_hook)
+    foreach (sfMixer::getCallables('BaseTimelineTickPeer:doInsert:post') as $sf_hook)
     {
-      call_user_func($sf_hook, 'BaseUserPeer', $values, $con, $pk);
+      call_user_func($sf_hook, 'BaseTimelineTickPeer', $values, $con, $pk);
     }
 
 		return $pk;
 	}
 
 	/**
-	 * Method perform an UPDATE on the database, given a User or Criteria object.
+	 * Method perform an UPDATE on the database, given a TimelineTick or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or User object containing data that is used to create the UPDATE statement.
+	 * @param      mixed $values Criteria or TimelineTick object containing data that is used to create the UPDATE statement.
 	 * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -527,16 +523,16 @@ abstract class BaseUserPeer {
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
     // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserPeer:doUpdate:pre') as $sf_hook)
+    foreach (sfMixer::getCallables('BaseTimelineTickPeer:doUpdate:pre') as $sf_hook)
     {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseUserPeer', $values, $con))
+      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseTimelineTickPeer', $values, $con))
       {
         return $sf_hook_retval;
       }
     }
 
 		if ($con === null) {
-			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(TimelineTickPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$selectCriteria = new Criteria(self::DATABASE_NAME);
@@ -544,10 +540,10 @@ abstract class BaseUserPeer {
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 
-			$comparison = $criteria->getComparison(UserPeer::ID);
-			$selectCriteria->add(UserPeer::ID, $criteria->remove(UserPeer::ID), $comparison);
+			$comparison = $criteria->getComparison(TimelineTickPeer::ID);
+			$selectCriteria->add(TimelineTickPeer::ID, $criteria->remove(TimelineTickPeer::ID), $comparison);
 
-		} else { // $values is User object
+		} else { // $values is TimelineTick object
 			$criteria = $values->buildCriteria(); // gets full criteria
 			$selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
 		}
@@ -558,35 +554,35 @@ abstract class BaseUserPeer {
 		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
 
     // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserPeer:doUpdate:post') as $sf_hook)
+    foreach (sfMixer::getCallables('BaseTimelineTickPeer:doUpdate:post') as $sf_hook)
     {
-      call_user_func($sf_hook, 'BaseUserPeer', $values, $con, $ret);
+      call_user_func($sf_hook, 'BaseTimelineTickPeer', $values, $con, $ret);
     }
 
     return $ret;
 	}
 
 	/**
-	 * Method to DELETE all rows from the user table.
+	 * Method to DELETE all rows from the timeline_tick table.
 	 *
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 */
 	public static function doDeleteAll($con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(TimelineTickPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 		$affectedRows = 0; // initialize var to track total num of affected rows
 		try {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(UserPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(TimelineTickPeer::TABLE_NAME, $con);
 			// Because this db requires some delete cascade/set null emulation, we have to
 			// clear the cached instance *after* the emulation has happened (since
 			// instances get re-added by the select statement contained therein).
-			UserPeer::clearInstancePool();
-			UserPeer::clearRelatedInstancePool();
+			TimelineTickPeer::clearInstancePool();
+			TimelineTickPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -596,9 +592,9 @@ abstract class BaseUserPeer {
 	}
 
 	/**
-	 * Method perform a DELETE on the database, given a User or Criteria object OR a primary key value.
+	 * Method perform a DELETE on the database, given a TimelineTick or Criteria object OR a primary key value.
 	 *
-	 * @param      mixed $values Criteria or User object or primary key or array of primary keys
+	 * @param      mixed $values Criteria or TimelineTick object or primary key or array of primary keys
 	 *              which is used to create the DELETE statement
 	 * @param      PropelPDO $con the connection to use
 	 * @return     int 	The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -609,27 +605,27 @@ abstract class BaseUserPeer {
 	 public static function doDelete($values, PropelPDO $con = null)
 	 {
 		if ($con === null) {
-			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(TimelineTickPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
 			// invalidate the cache for all objects of this type, since we have no
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
-			UserPeer::clearInstancePool();
+			TimelineTickPeer::clearInstancePool();
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof User) { // it's a model object
+		} elseif ($values instanceof TimelineTick) { // it's a model object
 			// invalidate the cache for this single object
-			UserPeer::removeInstanceFromPool($values);
+			TimelineTickPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
 		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(UserPeer::ID, (array) $values, Criteria::IN);
+			$criteria->add(TimelineTickPeer::ID, (array) $values, Criteria::IN);
 			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				UserPeer::removeInstanceFromPool($singleval);
+				TimelineTickPeer::removeInstanceFromPool($singleval);
 			}
 		}
 
@@ -644,7 +640,7 @@ abstract class BaseUserPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-			UserPeer::clearRelatedInstancePool();
+			TimelineTickPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -654,24 +650,24 @@ abstract class BaseUserPeer {
 	}
 
 	/**
-	 * Validates all modified columns of given User object.
+	 * Validates all modified columns of given TimelineTick object.
 	 * If parameter $columns is either a single column name or an array of column names
 	 * than only those columns are validated.
 	 *
 	 * NOTICE: This does not apply to primary or foreign keys for now.
 	 *
-	 * @param      User $obj The object to validate.
+	 * @param      TimelineTick $obj The object to validate.
 	 * @param      mixed $cols Column name or array of column names.
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(User $obj, $cols = null)
+	public static function doValidate(TimelineTick $obj, $cols = null)
 	{
 		$columns = array();
 
 		if ($cols) {
-			$dbMap = Propel::getDatabaseMap(UserPeer::DATABASE_NAME);
-			$tableMap = $dbMap->getTable(UserPeer::TABLE_NAME);
+			$dbMap = Propel::getDatabaseMap(TimelineTickPeer::DATABASE_NAME);
+			$tableMap = $dbMap->getTable(TimelineTickPeer::TABLE_NAME);
 
 			if (! is_array($cols)) {
 				$cols = array($cols);
@@ -687,7 +683,7 @@ abstract class BaseUserPeer {
 
 		}
 
-		return BasePeer::doValidate(UserPeer::DATABASE_NAME, UserPeer::TABLE_NAME, $columns);
+		return BasePeer::doValidate(TimelineTickPeer::DATABASE_NAME, TimelineTickPeer::TABLE_NAME, $columns);
 	}
 
 	/**
@@ -695,23 +691,23 @@ abstract class BaseUserPeer {
 	 *
 	 * @param      string $pk the primary key.
 	 * @param      PropelPDO $con the connection to use
-	 * @return     User
+	 * @return     TimelineTick
 	 */
 	public static function retrieveByPK($pk, PropelPDO $con = null)
 	{
 
-		if (null !== ($obj = UserPeer::getInstanceFromPool((string) $pk))) {
+		if (null !== ($obj = TimelineTickPeer::getInstanceFromPool((string) $pk))) {
 			return $obj;
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(TimelineTickPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		$criteria->add(UserPeer::ID, $pk);
+		$criteria = new Criteria(TimelineTickPeer::DATABASE_NAME);
+		$criteria->add(TimelineTickPeer::ID, $pk);
 
-		$v = UserPeer::doSelect($criteria, $con);
+		$v = TimelineTickPeer::doSelect($criteria, $con);
 
 		return !empty($v) > 0 ? $v[0] : null;
 	}
@@ -727,16 +723,16 @@ abstract class BaseUserPeer {
 	public static function retrieveByPKs($pks, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(TimelineTickPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		$objs = null;
 		if (empty($pks)) {
 			$objs = array();
 		} else {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-			$criteria->add(UserPeer::ID, $pks, Criteria::IN);
-			$objs = UserPeer::doSelect($criteria, $con);
+			$criteria = new Criteria(TimelineTickPeer::DATABASE_NAME);
+			$criteria->add(TimelineTickPeer::ID, $pks, Criteria::IN);
+			$objs = TimelineTickPeer::doSelect($criteria, $con);
 		}
 		return $objs;
 	}
@@ -768,15 +764,15 @@ abstract class BaseUserPeer {
 	{
 	  if (preg_match('/^do(Select|Count)(Join(All(Except)?)?|Stmt)?/', $method, $match))
 	  {
-	    return sprintf('BaseUserPeer:%s:%1$s', 'Count' == $match[1] ? 'doCount' : $match[0]);
+	    return sprintf('BaseTimelineTickPeer:%s:%1$s', 'Count' == $match[1] ? 'doCount' : $match[0]);
 	  }
 	
 	  throw new LogicException(sprintf('Unrecognized function "%s"', $method));
 	}
 
-} // BaseUserPeer
+} // BaseTimelineTickPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseUserPeer::buildTableMap();
+BaseTimelineTickPeer::buildTableMap();
 
